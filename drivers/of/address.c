@@ -164,7 +164,8 @@ static unsigned int of_bus_pci_get_flags(const __be32 *addr)
 
 static bool of_node_is_pcie(struct device_node *np)
 {
-	bool is_pcie = of_node_name_eq(np, "pcie");
+	bool is_pcie = of_node_name_eq(np, "pcie") ||
+		       of_node_name_eq(np, "qcom,pcie");
 
 	if (is_pcie)
 		pr_warn_once("%pOF: Missing device_type\n", np);
