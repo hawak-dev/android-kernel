@@ -101,6 +101,7 @@
 #include <trace/hooks/drm_atomic.h>
 #include <trace/hooks/psci.h>
 #include <trace/hooks/usb.h>
+#include <trace/hooks/xhci.h>
 #include <trace/hooks/regmap.h>
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/mmc.h>
@@ -368,6 +369,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_thermal_zone_device);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_psci_tos_resident_on);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_psci_cpu_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_new_device_added);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_suspend);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_unlock_slowpath);
