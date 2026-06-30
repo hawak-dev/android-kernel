@@ -41,12 +41,36 @@ MAKE_ARGS=(
     "LLVM=1"
     "LLVM_IAS=1"
     "LOCALVERSION=-VoltQ8"
-    "LD=ld.lld"     # 🚀 إجبار النظام على استخدام رابط جوجل السريع المتوافق مع Clang 19
-    "LTO=thin"      # ⚡ تحويل الـ LTO إلى النمط الخفيف لإنهاء البناء السحابي في دقائق معدودة
+    "LD=ld.lld"              # 🚀 إجبار المترجم على استخدام رابط جوجل السريع المتوافق مع Clang 19
+    "KBUILD_BUILD_VERSION=1" # 📑 تنظيف ومنع استدعاء setlocalversion بشكل خاطئ أثناء التجميع الخارجي
 )
 
 # Use the generic GKI defconfig
 DEFCONFIG="gki_defconfig"
+DEFCONFIG_PATH="${KERNEL_DIR}/arch/arm64/configs/${DEFCONFIG}"
+
+echo "==========================================================="
+echo " 🚀 Patching defconfig LTO options to prevent cloud memory hang..."
+echo "==========================================================="
+# نقوم بتنظيف أي إعدادات LTO قديمة وحقن الإعداد الجديد لضمان عدم تخطي الرام المسموح به في السحاب (7GB)
+if [ -f "$DEFCONFIG_PATH" ]; then
+    sed -i '/CONFIG_LTO_CLANG_FULL/d' "$DEFCONFIG_PATH"
+    sed -i '/CONFIG_LTO_CLANG_THIN/d' "$DEFCONFIG_PATH"
+    sed -i '/CONFIG_LTO_NONE/d' "$DEFCONFIG_PATH"
+    
+    # خيار إيقاف الـ LTO تماماً (الأسرع والأضمن للسحاب بنسبة 100% - بناء في أقل من 10 دقائق):
+    echo "CONFIG_LTO_NONE=y" >> "$DEFCONFIG_PATH"
+    echo "CONFIG_LTO_CLANG_FULL=n" >> "$DEFCONFIG_PATH"
+    echo "CONFIG_LTO_CLANG_THIN=n" >> "$DEFCONFIG_PATH"
+    echo "✅ LTO successfully disabled in defconfig for maximum cloud speed!"
+    
+    # 💡 ملحوظة اختيارية: إذا أردت تفعيل نمط الـ Thin LTO بدلاً من الإيقاف الكامل، قم بحذف الأسطر الثلاثة أعلاه واستخدم هذه بدلاً منها:
+    # echo "CONFIG_LTO_NONE=n" >> "$DEFCONFIG_PATH"
+    # echo "CONFIG_LTO_CLANG_FULL=n" >> "$DEFCONFIG_PATH"
+    # echo "CONFIG_LTO_CLANG_THIN=y" >> "$DEFCONFIG_PATH"
+else
+    echo "⚠️ Warning: defconfig file not found at $DEFCONFIG_PATH"
+fi
 
 # Get number of cores for parallel build
 CORES=$(nproc)
