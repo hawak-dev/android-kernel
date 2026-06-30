@@ -3,9 +3,9 @@
 # Exit on any error
 set -e
 
-# Setup paths
+# 🛠️ جعل المسارات ديناميكية ومرنة لتعمل محلياً وسحابياً تلقائياً
 KERNEL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CLANG_DIR="/home/protest/clang-r530567"
+CLANG_DIR="${KERNEL_DIR}/clang-r530567"
 OUT_DIR="${KERNEL_DIR}/out"
 LOG_DIR="${KERNEL_DIR}/build_logs"
 
