@@ -41,6 +41,8 @@ MAKE_ARGS=(
     "LLVM=1"
     "LLVM_IAS=1"
     "LOCALVERSION=-VoltQ8"
+    "LD=ld.lld"     # 🚀 إجبار النظام على استخدام رابط جوجل السريع المتوافق مع Clang 19
+    "LTO=thin"      # ⚡ تحويل الـ LTO إلى النمط الخفيف لإنهاء البناء السحابي في دقائق معدودة
 )
 
 # Use the generic GKI defconfig
